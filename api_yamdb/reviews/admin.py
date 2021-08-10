@@ -15,7 +15,7 @@ class GenreAdmin(admin.ModelAdmin):
 
 class TitleAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'year',
-                    'category', 'genre')
+                    'category')
     empty_value_display = '-пусто-'
 
 
