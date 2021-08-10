@@ -123,10 +123,13 @@ with open("static/data/users.csv", "r") as data:
         c.execute(
             "INSERT INTO users_user "
             "(id, password, username, email, role, bio, first_name, "
-            "last_name, is_superuser, is_staff, is_active, date_joined, confirm_code) "
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (id, password, username, email, role, bio, first_name,
-             last_name, is_superuser, is_staff, is_active, date_joined, confirm_code)
+            "last_name, is_superuser, is_staff, is_active, date_joined,"
+            "confirm_code) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                id, password, username, email, role, bio, first_name,
+                last_name, is_superuser, is_staff, is_active,
+                date_joined, confirm_code
+            )
         )
         conn.commit()
 
