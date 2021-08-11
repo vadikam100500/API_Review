@@ -2,7 +2,6 @@ requests
 django==2.2.16
 django_filter
 djangorestframework==3.12.4
-djoser
 djangorestframework_simplejwt 
 drf_yasg
 pytest==6.2.4
