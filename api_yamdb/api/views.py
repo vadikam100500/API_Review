@@ -4,7 +4,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework import mixins
 from rest_framework.filters import SearchFilter
-from rest_framework.pagination import PageNumberPagination
 
 from .serializers import CustomUserSerializer
 from .permissions import IsSuperUser, IsAdminUserOrReadOnly
@@ -32,10 +31,9 @@ class CustomViewSet(mixins.CreateModelMixin,
 
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.annotate(rating=(Avg('reviews__score')))
-    permission_classes = [IsAdminUserOrReadOnly, ]
+    permission_classes = (IsAdminUserOrReadOnly, )
     filter_backends = (DjangoFilterBackend,)
     filterset_class = Filter
-    pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -46,8 +44,7 @@ class TitleViewSet(viewsets.ModelViewSet):
 class GenreViewSet(CustomViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAdminUserOrReadOnly, ]
-    pagination_class = PageNumberPagination
+    permission_classes = (IsAdminUserOrReadOnly, )
     filter_backends = (SearchFilter,)
     search_fields = ('slug', 'name')
     lookup_field = 'slug'
@@ -56,8 +53,7 @@ class GenreViewSet(CustomViewSet):
 class CategoryViewSet(CustomViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAdminUserOrReadOnly, ]
-    pagination_class = PageNumberPagination
+    permission_classes = (IsAdminUserOrReadOnly, )
     filter_backends = (SearchFilter,)
     search_fields = ('slug', 'name')
     lookup_field = 'slug'
