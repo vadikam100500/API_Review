@@ -4,7 +4,11 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
+
 router.register('users', views.UserViewSet, basename='user')
+router.register(r'categories', views.CategoryViewSet)
+router.register(r'genres', views.GenreViewSet)
+router.register(r'titles', views.TitleViewSet)
 
 urlpatterns = [
     path('v1/', include(router.urls)),
