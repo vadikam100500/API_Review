@@ -16,13 +16,14 @@
 * pytest-django
 * pytest-pythonpath
 
-
 # Documentation and requests examples
 - if you make runserver, you can see that here:
 * [ Task ]( http://127.0.0.1:8000/redoc/ )
 * [ Documentation and requests ]( http://127.0.0.1:8000/redoc_main/ )
 * [ Documentation and requests ]( http://127.0.0.1:8000/swagger/ )
 
+# Database
+* to transform csv to sqlite, run: python3 manage.py csv_to_sqlite
 
 # Task
 - Проект YaMDb собирает отзывы (Review) пользователей на произведения (Titles). Произведения делятся на категории: «Книги», «Фильмы», «Музыка». Список категорий (Category) может быть расширен администратором (например, можно добавить категорию «Изобразительное искусство» или «Ювелирка»).
