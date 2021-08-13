@@ -13,12 +13,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import AccessToken
+from reviews.models import Category, Genre, Review, Title
 
 from . import serializers
 from .filters import Filter
-from .permissions import IsAdminUserOrReadOnly, IsSuperUser
-from .serializers import CustomUserSerializer
-from reviews.models import Category, Genre, Title
+from .permissions import CustomPermission, IsAdminUserOrReadOnly, IsSuperUser
 
 User = get_user_model()
 
@@ -83,7 +82,7 @@ class ConfirmationView(APIView):
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = serializers.CustomUserSerializer
     permission_classes = (IsSuperUser,)
     lookup_field = 'username'
 
@@ -94,11 +93,11 @@ class UserViewSet(viewsets.ModelViewSet):
     )
     def me(self, request, pk=None):
         if request.method == 'GET':
-            serializer = CustomUserSerializer(self.request.user)
+            serializer = serializers.CustomUserSerializer(self.request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         if request.method == 'PATCH':
             user = get_object_or_404(User, username=self.request.user)
-            serializer = CustomUserSerializer(
+            serializer = serializers.CustomUserSerializer(
                 user, data=request.data, partial=True
             )
             if serializer.is_valid():
@@ -123,9 +122,9 @@ class TitleViewSet(viewsets.ModelViewSet):
     filterset_class = Filter
 
     def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return serializers.TitleReadSerializer
-        return serializers.TitleCreateSerializer
+        if self.request.method in ["POST", "PATCH"]:
+            return serializers.TitleCreateSerializer
+        return serializers.TitleReadSerializer
 
 
 class GenreViewSet(CustomViewSet):
@@ -144,3 +143,44 @@ class CategoryViewSet(CustomViewSet):
     filter_backends = (SearchFilter,)
     search_fields = ('slug', 'name')
     lookup_field = 'slug'
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ReviewSerializer
+    permission_classes = (CustomPermission,)
+
+    def get_serializer_context(self):
+        context = super(ReviewViewSet, self).get_serializer_context()
+        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
+        context.update({'title': title})
+        return context
+
+    def get_queryset(self):
+        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
+        return title.reviews.all().order_by('id')
+
+    def perform_create(self, serializer):
+        title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
+        serializer.save(author=self.request.user, title=title)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.CommentSerializer
+    permission_classes = (CustomPermission,)
+
+    def get_queryset(self):
+        review = get_object_or_404(
+            Review,
+            title_id=self.kwargs.get('title_id'),
+            id=self.kwargs.get('review_id')
+        )
+        return review.comments.all().order_by('id')
+
+    def perform_create(self, serializer):
+        review = get_object_or_404(
+            Review,
+            title_id=self.kwargs.get('title_id'),
+            id=self.kwargs.get('review_id')
+        )
+        user = get_object_or_404(User, username=self.request.user)
+        serializer.save(author=user, review=review)
