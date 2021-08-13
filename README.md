@@ -1,4 +1,4 @@
-# API for a database with reviews for films/books/music.
+# API YaMDb
 
 # Functionality
 * Getting confirmation code using email and then Auth with JWT-token.
@@ -8,14 +8,21 @@
 # What I used
 * requests
 * django
+* django_filter
 * djangorestframework
-* djoser
 * djangorestframework_simplejwt 
 * drf_yasg
 * pytest
 * pytest-django
 * pytest-pythonpath
-* sqlite3
+
+
+# Documentation and requests examples
+- if you make runserver, you can see that here:
+* [ Task ]( http://127.0.0.1:8000/redoc/ )
+* [ Documentation and requests ]( http://127.0.0.1:8000/redoc_main/ )
+* [ Documentation and requests ]( http://127.0.0.1:8000/swagger/ )
+
 
 # Task
 - Проект YaMDb собирает отзывы (Review) пользователей на произведения (Titles). Произведения делятся на категории: «Книги», «Фильмы», «Музыка». Список категорий (Category) может быть расширен администратором (например, можно добавить категорию «Изобразительное искусство» или «Ювелирка»).

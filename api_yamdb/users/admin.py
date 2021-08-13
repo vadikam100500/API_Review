@@ -6,7 +6,7 @@ from .models import User
 class MyUserAdmin(UserAdmin):
     model = User
     fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('role', 'bio', 'confirm_code')}),
+            (None, {'fields': ('role', 'bio')}),
     )
 
 

@@ -16,9 +16,9 @@ class User(AbstractUser):
     bio = models.TextField(max_length=250, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.role == "moderator":
+        if self.role == 'moderator':
             self.is_staff = True
-        if self.role == "admin":
+        if self.role == 'admin':
             self.is_superuser = True
         super(User, self).save(*args, **kwargs)
 

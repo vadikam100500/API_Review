@@ -80,6 +80,27 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (IsSuperUser,)
     lookup_field = 'username'
 
+    @action(
+        methods=['get', 'patch'],
+        detail=False,
+        permission_classes=[IsAuthenticated]
+    )
+    def me(self, request, pk=None):
+        if request.method == 'GET':
+            serializer = CustomUserSerializer(self.request.user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        if request.method == 'PATCH':
+            user = get_object_or_404(User, username=self.request.user)
+            serializer = CustomUserSerializer(
+                user, data=request.data, partial=True
+            )
+            if serializer.is_valid():
+                serializer.save(role=user.role)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                serializer.data, status=status.HTTP_400_BAD_REQUEST
+            )
+
 
 class CustomViewSet(mixins.CreateModelMixin,
                     mixins.DestroyModelMixin,
