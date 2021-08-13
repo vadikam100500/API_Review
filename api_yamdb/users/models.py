@@ -10,13 +10,12 @@ class User(AbstractUser):
     ]
     role = models.CharField(
         max_length=40, choices=ROLE,
-        default=ROLE, verbose_name='Роль'
+        default='user', verbose_name='Роль',
     )
+    email = models.EmailField(max_length=60, blank=False, unique=True)
     bio = models.TextField(max_length=250, blank=True)
-    confirm_code = models.CharField(max_length=5)
 
     def save(self, *args, **kwargs):
-        self.is_active = True
         if self.role == "moderator":
             self.is_staff = True
         if self.role == "admin":

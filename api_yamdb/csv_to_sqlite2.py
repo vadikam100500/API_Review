@@ -100,7 +100,6 @@ with open("static/data/users.csv", "r") as data:
     for row in reader:
         id = row['id']
         password = '12345678'
-        confirm_code = 'Yes'
         username = row['username']
         email = row['email']
         role = row['role']
@@ -123,12 +122,12 @@ with open("static/data/users.csv", "r") as data:
         c.execute(
             "INSERT INTO users_user "
             "(id, password, username, email, role, bio, first_name, "
-            "last_name, is_superuser, is_staff, is_active, date_joined,"
-            "confirm_code) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "last_name, is_superuser, is_staff, is_active, date_joined)"
+            "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 id, password, username, email, role, bio, first_name,
                 last_name, is_superuser, is_staff, is_active,
-                date_joined, confirm_code
+                date_joined
             )
         )
         conn.commit()

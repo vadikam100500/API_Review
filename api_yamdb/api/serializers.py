@@ -5,13 +5,25 @@ from reviews.models import Category, Title, Genre
 User = get_user_model()
 
 
+class SignupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'username')
+
+
+class ConfirmationCodeSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    confirmation_code = serializers.CharField()
+
+
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            "username", "pk", "first_name",
-            "last_name", "email", "role", "bio"
+            'username', 'first_name',
+            'last_name', 'email', 'role', 'bio'
         )
+        lookup_field = 'username'
 
 
 class CategorySerializer(serializers.ModelSerializer):
