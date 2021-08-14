@@ -79,8 +79,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         title = self.context.get('title')
         request = self.context.get('request')
         if (
-            request.method != 'PATCH' and
-            Review.objects.filter(title=title, author=request.user).exists()
+            request.method != 'PATCH'
+            and Review.objects.filter(
+                title=title, author=request.user
+            ).exists()
         ):
             raise serializers.ValidationError('Score already exists')
         return data

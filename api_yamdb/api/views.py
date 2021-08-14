@@ -120,7 +120,7 @@ class TitleViewSet(viewsets.ModelViewSet):
         Title.objects.
         annotate(rating=(Avg('reviews__score'))).
         order_by('-pk')
-        )
+    )
     permission_classes = (IsAdminUserOrReadOnly, )
     filter_backends = (DjangoFilterBackend,)
     filterset_class = Filter

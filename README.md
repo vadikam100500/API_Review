@@ -23,7 +23,10 @@
 * [ Documentation and requests ]( http://127.0.0.1:8000/swagger/ )
 
 # Database
-* to transform csv to sqlite, run: python3 manage.py csv_to_sqlite
+* to transform csv to sqlite, run:
+- python3 manage.py makemigrations
+- python3 manage.py migrate
+- python3 manage.py database
 
 # Task
 - Проект YaMDb собирает отзывы (Review) пользователей на произведения (Titles). Произведения делятся на категории: «Книги», «Фильмы», «Музыка». Список категорий (Category) может быть расширен администратором (например, можно добавить категорию «Изобразительное искусство» или «Ювелирка»).
