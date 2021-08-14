@@ -15,6 +15,9 @@ class User(AbstractUser):
     email = models.EmailField(max_length=60, blank=False, unique=True)
     bio = models.TextField(max_length=250, blank=True)
 
+    class Meta:
+        ordering = ('-pk',)
+
     def save(self, *args, **kwargs):
         if self.role == 'moderator':
             self.is_staff = True

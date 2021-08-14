@@ -13,7 +13,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import AccessToken
-from reviews.models import Category, Genre, Review, Title
+from reviews.models import Category, Comment, Genre, Review, Title
 
 from . import serializers
 from .filters import Filter
@@ -116,7 +116,11 @@ class CustomViewSet(mixins.CreateModelMixin,
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.annotate(rating=(Avg('reviews__score')))
+    queryset = (
+        Title.objects.
+        annotate(rating=(Avg('reviews__score'))).
+        order_by('-pk')
+        )
     permission_classes = (IsAdminUserOrReadOnly, )
     filter_backends = (DjangoFilterBackend,)
     filterset_class = Filter
@@ -150,14 +154,18 @@ class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = (CustomPermission,)
 
     def get_serializer_context(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Title.objects.none()
         context = super(ReviewViewSet, self).get_serializer_context()
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
         context.update({'title': title})
         return context
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Title.objects.none()
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
-        return title.reviews.all().order_by('id')
+        return title.reviews.all()
 
     def perform_create(self, serializer):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
@@ -169,12 +177,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (CustomPermission,)
 
     def get_queryset(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return Comment.objects.none()
         review = get_object_or_404(
             Review,
             title_id=self.kwargs.get('title_id'),
             id=self.kwargs.get('review_id')
         )
-        return review.comments.all().order_by('id')
+        return review.comments.all()
 
     def perform_create(self, serializer):
         review = get_object_or_404(
