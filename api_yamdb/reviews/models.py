@@ -40,7 +40,7 @@ class Genre(models.Model):
 
 
 class Title(models.Model):
-    name = models.CharField('Название', max_length=200)
+    name = models.CharField('Название', max_length=200, db_index=True)
     year = models.PositiveSmallIntegerField(
         validators=[
             MaxValueValidator(datetime.now().year),
@@ -59,6 +59,7 @@ class Title(models.Model):
     genre = models.ManyToManyField(
         Genre,
         related_name='titles',
+        db_index=True,
         blank=True,
         verbose_name='Жанр'
     )
@@ -99,7 +100,7 @@ class Review(models.Model):
         ordering = ('-pub_date',)
         constraints = [
             models.UniqueConstraint(
-                fields=['title_id', 'author'],
+                fields=['title', 'author'],
                 name='unique_name_reviews'
             )
         ]

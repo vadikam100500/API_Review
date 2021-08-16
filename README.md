@@ -1,11 +1,19 @@
 # API YaMDb
 
+- The YaMDb project collects user reviews(Review) for works (Titles). The works are divided into categories: "Books", "Films", "Music". The list of categories can be expanded by the administrator.
+- The works themselves are not stored in YaMDb, you can not watch a movie or listen to music here.
+- In each category there are works: books, movies or music.
+- A work can be assigned a genre from the list of preset ones. Only the administrator can create new genres.
+- Grateful or outraged users leave text reviews for the works and give the work a rating in the range from one to ten (an integer); an average rating of the work is formed from user ratings — a rating (an integer). The user can leave only one review for one work.
+
 # Functionality
+
 * Getting confirmation code using email and then Auth with JWT-token.
 * Permission system for different roles: admin/moderator/user.
 * CRUD title, category, genre, review, comment.
 
 # What I used
+
 * requests
 * django
 * django_filter
@@ -16,19 +24,34 @@
 * pytest-django
 * pytest-pythonpath
 
-# Documentation and requests examples
-- if you make runserver, you can see that here:
-* [ Task ]( http://127.0.0.1:8000/redoc/ )
-* [ Documentation and requests ]( http://127.0.0.1:8000/redoc_main/ )
-* [ Documentation and requests ]( http://127.0.0.1:8000/swagger/ )
+### How to install
+
+```sh
+$ python3 -m venv 'name of virtual environment'
+$ venv 'name of virtual environment'/Scripts(or bin for linux)/activate
+$ pip install -r requirements.txt
+$ python3 manage.py makemigrations
+$ python3 manage.py migrate
+```
 
 # Database
-* to transform csv to sqlite, run:
-- python3 manage.py makemigrations
-- python3 manage.py migrate
-- python3 manage.py database
+
+* to transform csv to sqlite:
+
+```sh
+$ python3 manage.py database
+```
+
+# Documentation and requests examples
+
+- if you make runserver, you can see that here:
+* [ Task ]( http://127.0.0.1:8000/redoc/ )
+* [ Documentation and requests - Redoc ]( http://127.0.0.1:8000/redoc_main/ )
+* [ Documentation and requests - Swagger]( http://127.0.0.1:8000/swagger/ )
+
 
 # Task
+
 - Проект YaMDb собирает отзывы (Review) пользователей на произведения (Titles). Произведения делятся на категории: «Книги», «Фильмы», «Музыка». Список категорий (Category) может быть расширен администратором (например, можно добавить категорию «Изобразительное искусство» или «Ювелирка»).
 - Сами произведения в YaMDb не хранятся, здесь нельзя посмотреть фильм или послушать музыку.
 - В каждой категории есть произведения: книги, фильмы или музыка. Например, в категории «Книги» могут быть произведения «Винни-Пух и все-все-все» и «Марсианские хроники», а в категории «Музыка» — песня «Давеча» группы «Насекомые» и вторая сюита Баха.

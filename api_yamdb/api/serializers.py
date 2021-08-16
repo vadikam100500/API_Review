@@ -11,6 +11,11 @@ class SignupSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'username')
 
+    def validate(self, data):
+        if data['username'] == 'me':
+            raise serializers.ValidationError('Choose other username.')
+        return data
+
 
 class ConfirmationCodeSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)

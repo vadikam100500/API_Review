@@ -17,6 +17,12 @@ class User(AbstractUser):
 
     class Meta:
         ordering = ('-pk',)
+        constraints = [
+            models.CheckConstraint(
+                check=~models.Q(username='me'),
+                name='user_is_not_me'
+            )
+        ]
 
     def save(self, *args, **kwargs):
         if self.role == 'moderator':
