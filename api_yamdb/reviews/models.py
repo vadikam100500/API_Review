@@ -10,7 +10,8 @@ User = get_user_model()
 class Category(models.Model):
     name = models.CharField(max_length=200, verbose_name='Имя категории')
     slug = models.SlugField(
-        max_length=50, unique=True, null=True, verbose_name='Slug категории'
+        max_length=50, unique=True, null=True,
+        verbose_name='Slug категории', db_index=True
     )
 
     class Meta:
@@ -25,7 +26,8 @@ class Category(models.Model):
 class Genre(models.Model):
     name = models.CharField(max_length=200, verbose_name='Имя жанра')
     slug = models.SlugField(
-        unique=True, max_length=50, null=True, verbose_name='Slug жанра'
+        unique=True, max_length=50, null=True,
+        verbose_name='Slug жанра', db_index=True
     )
 
     class Meta:
@@ -39,7 +41,7 @@ class Genre(models.Model):
 
 class Title(models.Model):
     name = models.CharField('Название', max_length=200)
-    year = models.IntegerField(
+    year = models.PositiveSmallIntegerField(
         validators=[
             MaxValueValidator(datetime.now().year),
             MinValueValidator(1)
