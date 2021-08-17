@@ -18,7 +18,7 @@ from reviews.models import Category, Comment, Genre, Review, Title
 from . import serializers
 from .filters import TitleFilter
 from .permissions import (IsAdminUserOrReadOnly, IsSuperUser,
-                          NotUserRoleOrIsAuthorOrReadOnly)
+                          NotUserRoleOrIsAuthor, ReadOnly)
 
 User = get_user_model()
 
@@ -146,7 +146,7 @@ class TitleViewSet(viewsets.ModelViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ReviewSerializer
-    permission_classes = (NotUserRoleOrIsAuthorOrReadOnly,)
+    permission_classes = (NotUserRoleOrIsAuthor | ReadOnly,)
 
     def get_serializer_context(self):
         if getattr(self, 'swagger_fake_view', False):
@@ -169,7 +169,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CommentSerializer
-    permission_classes = (NotUserRoleOrIsAuthorOrReadOnly,)
+    permission_classes = (NotUserRoleOrIsAuthor | ReadOnly,)
 
     def get_queryset(self):
         if getattr(self, 'swagger_fake_view', False):
