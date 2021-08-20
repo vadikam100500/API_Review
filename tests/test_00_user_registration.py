@@ -33,7 +33,7 @@ class Test00UserRegistration:
     @pytest.mark.django_db(transaction=True)
     def test_00_invalid_data_signup(self, client):
         invalid_email = 'invalid_email'
-        invalid_username = 'invalid_username@yamdb.fake'
+        invalid_username = 'invalid_username@review.fake'
 
         invalid_data = {
             'email': invalid_email,
@@ -60,7 +60,7 @@ class Test00UserRegistration:
                 f'в ответе есть сообщение о том, какие поля заполенены неправильно'
             )
 
-        valid_email = 'validemail@yamdb.fake'
+        valid_email = 'validemail@review.fake'
         invalid_data = {
             'email': valid_email,
         }
@@ -74,7 +74,7 @@ class Test00UserRegistration:
     @pytest.mark.django_db(transaction=True)
     def test_00_valid_data_signup(self, client):
 
-        valid_email = 'valid@yamdb.fake'
+        valid_email = 'valid@review.fake'
         valid_username = 'valid_username'
 
         valid_data = {
@@ -140,7 +140,7 @@ class Test00UserRegistration:
             f'возвращается статус {code}'
         )
 
-        valid_email = 'valid@yamdb.fake'
+        valid_email = 'valid@review.fake'
         valid_username = 'valid_username'
 
         valid_data = {
@@ -167,7 +167,7 @@ class Test00UserRegistration:
 
     @pytest.mark.django_db(transaction=True)
     def test_00_registration_me_username_restricted(self, client):
-        valid_email = 'valid@yamdb.fake'
+        valid_email = 'valid@review.fake'
         invalid_username = 'me'
         request_type = 'POST'
 
@@ -184,8 +184,8 @@ class Test00UserRegistration:
 
     @pytest.mark.django_db(transaction=True)
     def test_00_registration_same_email_restricted(self, client):
-        valid_email_1 = 'test_duplicate_1@yamdb.fake'
-        valid_email_2 = 'test_duplicate_2@yamdb.fake'
+        valid_email_1 = 'test_duplicate_1@review.fake'
+        valid_email_2 = 'test_duplicate_2@review.fake'
         valid_username_1 = 'valid_username_1'
         valid_username_2 = 'valid_username_2'
         request_type = 'POST'

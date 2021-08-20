@@ -19,10 +19,10 @@ urlpatterns = [
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="yamdb",
+        title="API Review",
         default_version='v1',
         description=(
-            "Документация для сервиса yamdb"
+            "Документация для сервиса Review"
         ),
         # terms_of_service="URL страницы с пользовательским соглашением",
         contact=openapi.Contact(email="admin@gmail.com"),
