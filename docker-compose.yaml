@@ -13,7 +13,7 @@ services:
     env_file:
       - ./.env
   web:
-    build: .
+    image: vadikam100500/api_review_main:latest
     restart: always
     volumes:
       - static_value:/code/static/

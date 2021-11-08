@@ -1,4 +1,5 @@
 # API Review
+![Deploy status](https://github.com/vadikam100500/API_Review/actions/workflows/api_review_workflow.yml/badge.svg)
 
 - The Review project collects user reviews(Review) for works (Titles). The works are divided into categories: "Books", "Films", "Music". The list of categories can be expanded by the administrator.
 - The works themselves are not stored in Review, you can not watch a movie or listen to music here.
@@ -19,11 +20,14 @@
 - Django 2.2
 - PostgreSQL
 - Simple-JWT
-- OpenAPI.
+- OpenAPI
 - Docker
 
-## Local deploy
+## Deploy
 
+### Local:
+
++ Delete whole dir .github/workflows
 + Uncomment .env in .gitignore and set secrets in .env like:
     ```sh
     SECRET_KEY=YOUR_SECRET_KEY
@@ -48,19 +52,43 @@
     ```
 + Open a new window of terminal and from dir of project run:
     ```sh
-    docker-compose exec web ./manage.py migrate --noinput
-    docker-compose exec web ./manage.py database
-    docker-compose exec web ./manage.py create_admin
-    docker-compose exec web ./manage.py collectstatic --no-input 
+    $ docker-compose exec web ./manage.py migrate --noinput
+    $ docker-compose exec web ./manage.py database
+    $ docker-compose exec web ./manage.py create_admin
+    $ docker-compose exec web ./manage.py collectstatic --no-input 
     ```
 + You can get admin panel in http://localhost/admin/ with username and password, that you set in .env (DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_PASSWORD)
 
+### Continuous Integration and Continuous Deployment with testing by GithubActions:
++ Install Docker and Docker-compose on your server.
++ Copy docker-compose.yaml and nginx/default.conf to your server
++ Prepare your repository in GitHub:
+  + In settings of repo find secrets and set in them:
+    + DOCKER_PASSWORD, DOCKER_USERNAME - for pull and download image from DockerHub
+    + SECRET_KEY, ALLOWED_HOSTS - for django app
+    + DB_ENGINE, DB_NAME, POSTGRES_USER, POSTGRES_PASSWORD, DB_HOST, DB_PORT - to connect to default database
+    + DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_EMAIL, DJANGO_SUPERUSER_PASSWORD - for creating superuser
++ After push to github, the main application will pass the tests, update the image on DockerHub, and deploy to the server. Next, you need to connect to the server.
+    ```sh
+    $ ssh <USER>@<HOST>
+    ```
++ Run comands like after 'docker-compose up' in local deploy, but with 'sudo', like: 
+    ```sh
+    $ sudo docker-compose exec web ./manage.py migrate --noinput
+    $ etc.
+    ```
+
+
 ## Documentation and requests examples
 
-If you local deployed project, you can see that here:
-* [ Task and full documentation (Redoc) ]( http://localhost/redoc/ )
-* [ Documentation and requests - Swagger]( http://localhost/swagger/ )
-* [ Documentation and requests - Redoc ]( http://localhost/redoc_main/ )
++ If you local deployed project, you can see that here:
+    * [ Task and full documentation (Redoc) ]( http://localhost/redoc/ )
+    * [ Documentation and requests - Swagger]( http://localhost/swagger/ )
+    * [ Documentation and requests - Redoc ]( http://localhost/redoc_main/ )
++ If not local:
+    + ://yourhost/redoc/ - Task and full documentation
+    + ://yourhost/swagger/ - Swagger
+    + ://yourhost/redoc_main/ - Redoc
 
 ## Task
 
